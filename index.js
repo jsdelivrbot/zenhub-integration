@@ -1,12 +1,12 @@
-// imports
+'use strict';
 
+// imports
 var express = require('express')
 var app = express()
 var axios = require('axios')
 var bodyParser = require('body-parser')
 
 //configuration
-
 app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
