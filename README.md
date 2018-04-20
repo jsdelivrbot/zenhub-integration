@@ -18,9 +18,9 @@ Your app should now be running on [localhost:5000](http://localhost:5000/).
 ## Deploying to Heroku
 
 ```
-heroku create
+# make commit
 git push heroku master
-heroku open
+herlo logs -t
 ```
 
 Alternatively, you can deploy your own copy of the app using the web-based flow:
