@@ -17,6 +17,10 @@ app.get('/', function(request, response) {
 })
 
 app.post('/', function(request, response) {
+  moveIssue(1, "Icebox").then(res => {
+    console.log("sending response: " +  JSON.stringify(res))
+    response.send(res)
+  })
 })
 
 app.listen(app.get('port'), function() {
@@ -32,7 +36,10 @@ app.listen(app.get('port'), function() {
  * @param {int} repo_id
  * @param {string} position (i.e. 'tp[')
  **/
-function moveIssue(issue_number, pipelineName, repo_id = "130392688", position = "top") {
+function moveIssue(issue_number, pipelineName, repo_id, position) {
+  // overload arguments 
+  repo_id = repo_id || "130392688"
+  position = position || "top"
   let access_token = "8055b53733419dd4147b42f6f9389764003173fbb7d53e469738a1abaed7335928ec6648e36579a3"
 
   // first get board
