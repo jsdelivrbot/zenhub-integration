@@ -11,12 +11,11 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 app.get('/', function(request, response) {
-  console.log(JSON.stringify(request.body, null, 2))
   response.send('Hello World!')
 })
 
 app.post('/', function(request, response) {
-  console.log(request)
+  console.log(JSON.stringify(request.body, null, 2))
   response.send("SUCCESS")
 })
 
