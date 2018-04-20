@@ -17,10 +17,24 @@ app.get('/', function(request, response) {
 })
 
 app.post('/', function(request, response) {
-  moveIssue(1, "Icebox").then(res => {
-    console.log("sending response: " +  JSON.stringify(res))
-    response.send(res)
-  })
+  var actionTypeArr = validateAction(request.body);
+
+  var isBranch = actionTypeArr[0];
+  var isNewIssue = actionTypeArr[1];
+
+  if (isBranch) {
+    var issueName = request.body.ref || "";
+    var issueNumber = parseInt(issueName.match(/[0-9 , \.]+/g), 10);
+
+    console.log("request issueNumber", issueNumber);
+    // move issue to 'in progress' pipeline
+    // moveIssue(issueNumber, "In Progress");
+  }
+
+  console.log("isBranch", isBranch);
+  console.log("isNewIssue", isNewIssue);
+
+  response.send("SUCCESS")
 })
 
 app.listen(app.get('port'), function() {
@@ -71,4 +85,23 @@ function moveIssue(issue_number, pipelineName, repo_id, position) {
     }
     return Promise.resolve({success : false, error : "Could not get board information"})
   }).catch(res => Promise.resolve({success : false, err : res}))
+}
+
+/////////////////////////////////
+// validate github action type //
+/////////////////////////////////
+
+function validateAction(data) {
+  return [isNewBranch(data), isNewIssue(data)];
+}
+function isNewBranch(data) {
+  return _isObject(data) && data.ref_type === "branch";
+}
+
+function isNewIssue(data) {
+  return _isObject(data) && data.action === "opened";
+}
+
+function _isObject(obj) {
+  return obj === Object(obj);
 }
