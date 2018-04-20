@@ -40,15 +40,15 @@ function moveIssue(issue_number, pipelineName, repo_id, position) {
   // overload arguments 
   repo_id = repo_id || "130392688"
   position = position || "top"
-  let access_token = "8055b53733419dd4147b42f6f9389764003173fbb7d53e469738a1abaed7335928ec6648e36579a3"
+  var access_token = "8055b53733419dd4147b42f6f9389764003173fbb7d53e469738a1abaed7335928ec6648e36579a3"
 
   // first get board
-  let endpoint = `https://api.zenhub.io/p1/repositories/${repo_id}/board?access_token=${access_token}`
+  var endpoint = `https://api.zenhub.io/p1/repositories/${repo_id}/board?access_token=${access_token}`
   console.log("GET " + endpoint)
   return axios.get(endpoint).then(res => {
     if (res.data && res.data.pipelines) {
       // check to see if pipeline name is in board
-      let pipline_id = ""
+      var pipline_id = ""
       res.data.pipelines.forEach(p => {
         if (p.name === pipelineName) {
           pipline_id = p.id
@@ -60,7 +60,7 @@ function moveIssue(issue_number, pipelineName, repo_id, position) {
         return Promise.resolve({success : false, error : "could not find pipeline " + pipelineName})
       // make request to move issue
       endpoint = `https://api.zenhub.io/p1/repositories/${repo_id}/issues/${issue_number}/moves?access_token=${access_token}`
-      let body = {
+      var body = {
         pipeline_id : pipline_id,
         position : position
       }
