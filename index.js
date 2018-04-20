@@ -19,22 +19,27 @@ app.get('/', function(request, response) {
 app.post('/', function(request, response) {
   var actionTypeArr = validateAction(request.body);
 
+  // detect github action type
   var isBranch = actionTypeArr[0];
   var isNewIssue = actionTypeArr[1];
 
+  // if is a new branch
   if (isBranch) {
     var issueName = request.body.ref || "";
     var issueNumber = parseInt(issueName.match(/[0-9 , \.]+/g), 10);
 
     console.log("request issueNumber", issueNumber);
     // move issue to 'in progress' pipeline
-    // moveIssue(issueNumber, "In Progress");
+    moveIssue(issueNumber, "In Progress").then(res => {
+      response.send(JSON.stringify(res));
+      return;
+    })
   }
 
   console.log("isBranch", isBranch);
   console.log("isNewIssue", isNewIssue);
 
-  response.send("SUCCESS")
+  response.send("{Success : true, info : 'no action taken'}")
 })
 
 app.listen(app.get('port'), function() {
